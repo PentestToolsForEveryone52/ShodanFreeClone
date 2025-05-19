@@ -1,0 +1,15 @@
+{% extends "shodan.html" %}
+
+{% block content %}
+<div class="container u-full-width card card-padding">
+    <div class="row">
+        <div class="twelve columns">
+            <div class="alert alert-danger">
+                <h4>Error Occurred</h4>
+                <p>{{ error }}</p>
+            </div>
+            <a href="/" class="button button-primary">Return to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
