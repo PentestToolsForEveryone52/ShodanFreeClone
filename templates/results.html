@@ -1,0 +1,126 @@
+{% extends "shodan.html" %}
+
+{% block content %}
+<div class="container u-full-width card card-padding">
+    <div class="row l-search-results">
+        <div class="three columns summary">
+            <h6>Total Results</h6>
+            <h4 class="total-results">{{ count }}</h4>
+            <h6>Top Countries</h6>
+            <div id="country-facets">
+                {% if country_facets %}
+                    <ul class="country-list">
+                        {% for country in country_facets %}
+                        <li>
+                            <img src="https://flagcdn.com/16x12/{{ country.value|lower }}.png"
+                                 onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/16px-No_image_available.svg.png'"
+                                 width="16" height="12" class="flag"
+                                 alt="{{ country.value }}" title="{{ country.value }}">
+                            <span class="country-code">{{ country.value }}</span>
+                            <span class="country-count">({{ "{:,}".format(country.count) }})</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="error-message">
+                        <i class="fa fa-exclamation-circle"></i> No country data
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="nine columns">
+            <div style="margin-bottom: 10px; padding-left:20px" class="bg-light">
+                <strong>Product Spotlight:&nbsp;</strong>Keep track of internet-connected devices.
+                <button onclick="downloadIPs()" class="button button-primary" style="float: right;">
+                    <i class="fa fa-download"></i> Download IPs
+                </button>
+            </div>
+
+            {% for result in results %}
+            <div class="result">
+                <div class="heading">
+                    <a href="https://www.shodan.io/host/{{ result.ip }}" class="title text-dark" target="_blank">{{ result.ip }}</a>
+                    <div class="timestamp">{{ result.timestamp }}</div>
+                </div>
+                <div class="result-details">
+                    <ul>
+                        <li>{{ result.ip }}</li>
+                        {% if result.org != "Unknown" %}
+                        <li>{{ result.org }}</li>
+                        {% endif %}
+                        {% if result.country != "Unknown" %}
+                        <li>
+                            <img src="https://flagcdn.com/16x12/{{ result.country[:2]|lower }}.png"
+                                 width="16" height="12" class="flag">
+                            {{ result.country }}
+                        </li>
+                        {% endif %}
+                        {% if result.port != "Unknown" %}
+                        <li>Port: {{ result.port }}</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+function downloadIPs() {
+    let ipList = '';
+    {% for result in results %}
+    ipList += '{{ result.ip }}\n';
+    {% endfor %}
+
+    const blob = new Blob([ipList], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'shodan_ips_' + new Date().toISOString().slice(0, 10) + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 100);
+}
+</script>
+
+<style>
+.country-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+.country-list li {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+.flag {
+    margin-right: 8px;
+    border: 1px solid #ddd;
+}
+.country-code {
+    font-weight: bold;
+    margin-right: 5px;
+}
+.country-count {
+    color: #666;
+}
+.error-message {
+    color: #d9534f;
+    padding: 5px;
+}
+.button {
+    padding: 5px 10px;
+}
+.result {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #eee;
+}
+</style>
+{% endblock %}
