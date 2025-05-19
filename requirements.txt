@@ -1,0 +1,4 @@
+jq
+flask
+requests
+urllib3
