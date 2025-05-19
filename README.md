@@ -3,3 +3,6 @@ This is my shodan clone (web ui) with unlimited number of ips and free download,
 
 
 to use it, you must enter your FREE api key on the line 11 of the app.py file , which is not checked for membership (unlike the official api)
+
+> **⚠️ WARNING**  
+> !!! I'M NOT RESPONSIBLE FOR YOUR USAGE OF THIS PROGRAM !!!
