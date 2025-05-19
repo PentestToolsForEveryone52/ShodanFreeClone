@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shodan Clone - Internet of Things Search Engine</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Shodan CSS -->
+    <link href="https://wire.shodan.io/v2.5.0/default/css/wire.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.shodan.io/static/styles/search-6b1ae5f6.css">
+    <link rel="shortcut icon" href="https://www.shodan.io/static/img/favicon-60c1b1cd.png">
+
+    <!-- Font Awesome -->
+    <script defer src="https://kit.fontawesome.com/b7e79643d9.js" crossorigin="anonymous"></script>
+
+    <style>
+        .searchbox {
+            font-family: Arial;
+        }
+        .visually-hidden {
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+        .result {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .text-danger {
+            color: #dc3545 !important;
+        }
+        .ip-link {
+            color: #333;
+            font-weight: bold;
+        }
+        .metadata {
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        .metadata-item {
+            display: inline-block;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Shodan navbar -->
+    <div class="navbar">
+        <input id="menu-btn" type="checkbox" class="menu-btn"/>
+        <label for="menu-btn" class="menu-icon"><span class="navicon"><i class="fa fa-bars fa-fw"></i></span></label>
+        <a href="/" class="title"><img src="https://www.shodan.io/static/img/logo-6abcc86b.png" alt="Shodan" width="112" height="32"/></a>
+
+        <form action="/search" method="GET">
+            <div class="searchbox">
+                <div class="input-wrapper">
+                    <label for="search-query" class="visually-hidden">Enter search query</label>
+                    <input id="search-query" type="text" name="query" placeholder="Type / to search" autocapitalize="none" spellcheck="false"/>
+                </div>
+                <button type="submit" aria-label="Submit search query" class="button-red"><i class="fas fa-search fa-fw"></i></button>
+            </div>
+        </form>
+    </div>
+
+    {% block content %}
+    <!-- Default content will be overridden by child templates -->
+    <div class="container u-full-width card card-padding">
+        <div class="row">
+            <div class="twelve columns">
+                <h4>Welcome to Shodan Clone</h4>
+                <p>Enter a search query to begin exploring internet-connected devices.</p>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    <!-- Shodan JS -->
+    <script src="https://www.shodan.io/static/jquery/jquery-jvectormap-1.2.2-e35bf1c8.js"></script>
+    <script>
+        document.getElementById('search-query').addEventListener('keydown', function(e) {
+            if (e.key === '/') {
+                e.preventDefault();
+                this.focus();
+            }
+        });
+    </script>
+</body>
+</html>
